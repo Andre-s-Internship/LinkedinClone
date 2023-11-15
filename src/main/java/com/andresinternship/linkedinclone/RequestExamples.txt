@@ -1,0 +1,69 @@
+###
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "email": "johndoe@example.com",
+  "password": "password123",
+  "firstName": "John",
+  "lastName": "Doe",
+  "age": 30
+}
+
+
+
+###
+GET http://localhost:8080/generate
+Content-Type: application/json
+
+{
+"email": "johndoe@example.com",
+"password": "password123"
+}
+
+
+###
+GET http://localhost:8080/decode
+Content-Type: text/plain
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIU0EyNTYifQ.eyJleHBpcmVzX2F0IjoiVHVlIE5vdiAxNCAyMjoyMTozOCBBTVQgMjAyMyIsImlzc3VlZF9hdCI6IlR1ZSBOb3YgMTQgMjE6NTE6MzggQU1UIDIwMjMiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20ifQ.e9b7b6497ed05cd5e56422751d0688f5b1965b7988d183458e6bd4837027e169
+
+
+###
+GET http://localhost:8080/extractEmail
+Content-Type: text/plain
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIU0EyNTYifQ==.eyJleHBpcmVzX2F0IjoiVHVlIE5vdiAxNCAyMjo0NTo1MSBBTVQgMjAyMyIsImlzc3VlZF9hdCI6IlR1ZSBOb3YgMTQgMjI6MTU6NTEgQU1UIDIwMjMiLCJlbWFpbCI6ImN1c3RvbUVtYWlsQGV4YW1wbGUuY29tIn0=.18d3fb52f5415bb0aad4497633792e3aa3762e53ee307d39f9411bcd79120667
+
+
+###
+GET http://localhost:8080/extractDate
+Content-Type: text/plain
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIU0EyNTYifQ==.eyJleHBpcmVzX2F0IjoiVHVlIE5vdiAxNCAyMjo0NTo1MSBBTVQgMjAyMyIsImlzc3VlZF9hdCI6IlR1ZSBOb3YgMTQgMjI6MTU6NTEgQU1UIDIwMjMiLCJlbWFpbCI6ImN1c3RvbUVtYWlsQGV4YW1wbGUuY29tIn0=.18d3fb52f5415bb0aad4497633792e3aa3762e53ee307d39f9411bcd79120667
+
+
+###
+POST http://localhost:8080/company/create
+Content-Type: application/json
+
+{
+  "name": "Grid Dynamics1",
+  "description": "Company_Description",
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIU0EyNTYifQ.eyJleHBpcmVzX2F0IjoiV2VkIE5vdiAxNSAxMTozMToyOSBBTVQgMjAyMyIsImlzc3VlZF9hdCI6IldlZCBOb3YgMTUgMTE6MDE6MjkgQU1UIDIwMjMiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20ifQ.1c349efd3779e0015ab1d3e0b8d57bf1b55c342ea3856b9cc4c0d4f955f03617"
+}
+
+###
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "johndoe@example.com",
+  "password": "password123"
+}
+
+###
+GET http://localhost:8080/validate
+Content-Type: text/plain
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIU0EyNTYifQ.eyJleHBpcmVzX2F0IjoiV2VkIE5vdiAxNSAxMTozMToyOSBBTVQgMjAyMyIsImlzc3VlZF9hdCI6IldlZCBOb3YgMTUgMTE6MDE6MjkgQU1UIDIwMjMiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20ifQ.1c349efd3779e0015ab1d3e0b8d57bf1b55c342ea3856b9cc4c0d4f955f03617
