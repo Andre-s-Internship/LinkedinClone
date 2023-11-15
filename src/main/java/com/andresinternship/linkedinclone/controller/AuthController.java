@@ -1,10 +1,10 @@
 package com.andresinternship.linkedinclone.controller;
 
 import com.andresinternship.linkedinclone.exceptions.LoginException;
-import com.andresinternship.linkedinclone.requestDTO.UserRegistrationRequest;
+import com.andresinternship.linkedinclone.controller.requestdto.UserRegistrationRequest;
 import com.andresinternship.linkedinclone.exceptions.RequestValidationException;
 import com.andresinternship.linkedinclone.exceptions.UserAlreadyExistsException;
-import com.andresinternship.linkedinclone.requestDTO.UserLoginRequest;
+import com.andresinternship.linkedinclone.controller.requestdto.UserLoginRequest;
 import com.andresinternship.linkedinclone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

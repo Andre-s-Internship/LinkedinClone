@@ -1,11 +1,10 @@
 package com.andresinternship.linkedinclone.service;
 
 import com.andresinternship.linkedinclone.model.Company;
-import com.andresinternship.linkedinclone.model.TokenGenerator;
 import com.andresinternship.linkedinclone.model.User;
 import com.andresinternship.linkedinclone.repository.CompanyRepository;
 import com.andresinternship.linkedinclone.repository.UserRepository;
-import com.andresinternship.linkedinclone.requestDTO.CompanyCreationRequest;
+import com.andresinternship.linkedinclone.controller.requestdto.CompanyCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,9 @@
 package com.andresinternship.linkedinclone.service;
 
 import com.andresinternship.linkedinclone.exceptions.LoginException;
-import com.andresinternship.linkedinclone.requestDTO.UserRegistrationRequest;
+import com.andresinternship.linkedinclone.controller.requestdto.UserRegistrationRequest;
 import com.andresinternship.linkedinclone.exceptions.UserAlreadyExistsException;
-import com.andresinternship.linkedinclone.requestDTO.UserLoginRequest;
+import com.andresinternship.linkedinclone.controller.requestdto.UserLoginRequest;
 import com.andresinternship.linkedinclone.model.User;
 import com.andresinternship.linkedinclone.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

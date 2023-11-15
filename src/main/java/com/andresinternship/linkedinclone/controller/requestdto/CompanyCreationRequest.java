@@ -1,4 +1,4 @@
-package com.andresinternship.linkedinclone.requestDTO;
+package com.andresinternship.linkedinclone.controller.requestdto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

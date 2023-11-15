@@ -1,13 +1,12 @@
 package com.andresinternship.linkedinclone.controller;
 
-import com.andresinternship.linkedinclone.exceptions.AuthenticationException;
-import com.andresinternship.linkedinclone.exceptions.CompanyAlreadyExistsException;
-import com.andresinternship.linkedinclone.exceptions.UserAlreadyExistsException;
+import com.andresinternship.linkedinclone.exceptions.InvalidTokenException;
 import com.andresinternship.linkedinclone.model.Company;
-import com.andresinternship.linkedinclone.requestDTO.CompanyCreationRequest;
+import com.andresinternship.linkedinclone.controller.requestdto.CompanyCreationRequest;
 import com.andresinternship.linkedinclone.repository.CompanyRepository;
 import com.andresinternship.linkedinclone.service.CompanyService;
 import com.andresinternship.linkedinclone.service.TokenService;
+import com.andresinternship.linkedinclone.service.TokenValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,13 +24,14 @@ public class CompanyController {
     private CompanyService companyService;
 
     @Autowired
-    private TokenService tokenService;
+    private TokenValidation tokenValidation;
 
-
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity createCompany(@RequestBody CompanyCreationRequest companyCreationRequest) {
-        if (!tokenService.validateToken(companyCreationRequest.getToken())) {
-            return new ResponseEntity<>("Unauthorized user", HttpStatus.UNAUTHORIZED);
+        try {
+            tokenValidation.validateToken(companyCreationRequest.getToken());
+        } catch (InvalidTokenException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
 
         if (companyRepository.findByName(companyCreationRequest.getName()).isPresent()) {
@@ -43,19 +43,6 @@ public class CompanyController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + companyCreationRequest.getToken());
         return new ResponseEntity<>(body, headers, HttpStatus.CREATED);
-
-    }
-
-
-    @GetMapping("/decoder")
-    public String decodeToken() {
-//        if (companyRepository.findByName(companyCreationRequest.getName()).isPresent()) {
-//            throw new UserAlreadyExistsException();
-//        }
-        return tokenService.decodeToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIU0EyNTYifQ==.eyJleHBpcmVzX2F0IjoiVHVlIE5vdiAxNCAyMjoxMTo0OSBBTVQgMjAyMyIsImlzc3VlZF9hdCI6IlR1ZSBOb3YgMTQgMjE6NDE6NDkgQU1UIDIwMjMiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20ifQ==.99dd4ff4f35d8b429047ad112cffafaf5385c53fc8ae1eb77f1079570bb12996");
-
-//        companyService.createCompany(companyCreationRequest);
-//        return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
 

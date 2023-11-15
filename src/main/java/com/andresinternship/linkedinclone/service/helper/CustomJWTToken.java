@@ -1,4 +1,4 @@
-package com.andresinternship.linkedinclone.model;
+package com.andresinternship.linkedinclone.service.helper;
 
 public class CustomJWTToken {
 
