@@ -34,9 +34,6 @@ public class CompanyService {
         owner.ifPresent(user -> company.setOwner_id(user.getUser_id()));
 
         companyRepository.save(company);
-
         return company;
-
     }
-
 }

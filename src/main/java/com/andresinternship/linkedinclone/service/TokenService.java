@@ -5,14 +5,12 @@ import com.andresinternship.linkedinclone.controller.requestdto.UserLoginRequest
 import org.apache.tomcat.util.json.JSONParser;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.*;
 
 @Service
 public class TokenService {
 
-    @GetMapping(path = "/generate")
     public String generateToken(@RequestBody UserLoginRequest userLoginRequest) {
         Calendar calendar = Calendar.getInstance();
         Date issueDate = calendar.getTime();
@@ -26,7 +24,7 @@ public class TokenService {
                 .build();
     }
 
-    @GetMapping("/decode")
+    //Decode token is kept for testing purposes
     public String decodeToken(@RequestBody String token) {
         String[] parts = token.split("\\.");
         System.out.println(Arrays.toString(parts));
@@ -36,7 +34,6 @@ public class TokenService {
                 + "Payload: " + new String(decodedPayload) + "\n";
     }
 
-    @GetMapping("/extractEmail")
     public String extractEmailFromToken(@RequestBody String token) {
         String[] parts = token.split("\\.");
         String jsonString = new String(Base64.getDecoder().decode(parts[1]));

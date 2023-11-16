@@ -10,7 +10,6 @@ import java.util.*;
 public class TokenGenerator {
 
     private final String secretKey = "secretKey";
-
     private JSONObject payload = new JSONObject();
     private JSONObject header = new JSONObject();
 
@@ -66,7 +65,6 @@ public class TokenGenerator {
     private String encodeJSON(JSONObject jsonObject) {
         String encoded = Base64.getEncoder().encodeToString(jsonObject.toString().getBytes());
         return encoded.replace(String.valueOf('='), "");
-
     }
 
     public String build() {
@@ -78,7 +76,6 @@ public class TokenGenerator {
         return customJWTToken.toString();
     }
 
-
     public static TokenGenerator create() {
         return new TokenGenerator();
     }
@@ -88,4 +85,3 @@ public class TokenGenerator {
     }
 
 }
-

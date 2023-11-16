@@ -17,8 +17,4 @@ public class CustomJWTToken {
         return header + "." + payload + "." + signature;
     }
 
-    public static TokenGenerator create() {
-        return new TokenGenerator();
-    }
-
 }

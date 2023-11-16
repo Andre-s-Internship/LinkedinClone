@@ -1,10 +1,10 @@
 package com.andresinternship.linkedinclone.controller.requestdto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 public class UserRegistrationRequest {
 
     private String email;
