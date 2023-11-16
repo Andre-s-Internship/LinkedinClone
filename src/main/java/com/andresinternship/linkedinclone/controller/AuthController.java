@@ -1,12 +1,14 @@
 package com.andresinternship.linkedinclone.controller;
 
+import com.andresinternship.linkedinclone.controller.dto.LoginResponseDto;
 import com.andresinternship.linkedinclone.exceptions.LoginException;
-import com.andresinternship.linkedinclone.controller.requestdto.UserRegistrationRequest;
+import com.andresinternship.linkedinclone.controller.dto.UserRegistrationRequestDto;
 import com.andresinternship.linkedinclone.exceptions.RequestValidationException;
 import com.andresinternship.linkedinclone.exceptions.UserAlreadyExistsException;
-import com.andresinternship.linkedinclone.controller.requestdto.UserLoginRequest;
+import com.andresinternship.linkedinclone.controller.dto.UserLoginRequest;
+import com.andresinternship.linkedinclone.model.User;
 import com.andresinternship.linkedinclone.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.andresinternship.linkedinclone.utils.AuthDtoConverter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,29 +18,33 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequest userDTO) {
+    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequestDto userDTO) {
         try {
-            userService.registerUser(userDTO);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            User registeredUser = userService.registerUser(AuthDtoConverter.fromDto(userDTO));
+
+            return new ResponseEntity<>(AuthDtoConverter.toDto(registeredUser), HttpStatus.CREATED);
         } catch (UserAlreadyExistsException e) {
             return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
         } catch (RequestValidationException e) {
             return new ResponseEntity<>("Request validation failed", HttpStatus.BAD_REQUEST);
         }
     }
+
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody UserLoginRequest userDTO) {
         try {
-            String token = userService.login(userDTO);
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", "Bearer " + token);
-            return new ResponseEntity<>("User authenticated successfully!", headers, HttpStatus.CREATED);
+            String jwtToken = userService.login(userDTO.getEmail(), userDTO.getPassword());
+            return new ResponseEntity<>(new LoginResponseDto("GOOD", jwtToken), HttpStatus.CREATED);
         } catch (LoginException e) {
             return new ResponseEntity<>("Request validation failed", HttpStatus.BAD_REQUEST);
         }
     }
+
 }

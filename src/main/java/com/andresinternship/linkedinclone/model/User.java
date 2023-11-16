@@ -32,4 +32,7 @@ public class User {
 
     private Integer age;
 
+    // add relation here as well.
+    private Company ownedCompany;
+
 }

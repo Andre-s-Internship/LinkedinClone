@@ -28,7 +28,7 @@ public class Company {
 
     private String description;
 
+    // Add 1-to-1 relation between owner and company
     @Column(nullable = false)
-
-    private UUID owner_id;
+    private User owner;
 }

@@ -19,7 +19,7 @@ import java.util.Objects;
 @Service
 public class TokenValidation {
 
-    public boolean validateToken(@RequestBody String token) {
+    public boolean validateToken(String token) {
         String[] parts = token.split("\\.");
         CustomJWTToken customJWTToken = TokenGenerator.create(parts[0], parts[1]);
         boolean values = Objects.equals(token, customJWTToken.toString());
@@ -29,7 +29,7 @@ public class TokenValidation {
         } else throw new InvalidTokenException();
     }
 
-    public Date extractExpirationDateFromToken(@RequestBody String token)  {
+    public Date extractExpirationDateFromToken(String token)  {
         String[] parts = token.split("\\.");
         String jsonString = new String(Base64.getDecoder().decode(parts[1]));
         JSONParser parser = new JSONParser(jsonString);

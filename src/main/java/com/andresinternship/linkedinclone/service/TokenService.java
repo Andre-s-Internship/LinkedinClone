@@ -1,24 +1,24 @@
 package com.andresinternship.linkedinclone.service;
 
+import com.andresinternship.linkedinclone.model.User;
 import com.andresinternship.linkedinclone.service.helper.TokenGenerator;
-import com.andresinternship.linkedinclone.controller.requestdto.UserLoginRequest;
+import com.andresinternship.linkedinclone.controller.dto.UserLoginRequest;
 import org.apache.tomcat.util.json.JSONParser;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.*;
 
-@Service
 public class TokenService {
 
-    public String generateToken(@RequestBody UserLoginRequest userLoginRequest) {
+    public static String generateToken(User user) {
         Calendar calendar = Calendar.getInstance();
         Date issueDate = calendar.getTime();
         calendar.add(Calendar.MINUTE, 30);
         Date expiration = calendar.getTime();
 
         return TokenGenerator.create()
-                .withAttribute("email", userLoginRequest.getEmail())
+                .withAttribute("email", user.getEmail())
                 .withIssuedAt(issueDate)
                 .withExpiresAt(expiration)
                 .build();
