@@ -19,18 +19,18 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
-@RestController
 public class TokenValidator {
 
-    @GetMapping("/validate")
-    public static ResponseEntity validateToken(@RequestBody String token) {
+    public static void validateToken(String token) {
         String[] parts = token.split("\\.");
         CustomJWTToken customJWTToken = TokenGenerator.create(parts[0], parts[1]);
         boolean values = Objects.equals(token, customJWTToken.toString());
         Date expiration = extractExpirationDateFromToken(token);
         if (!values && expiration.compareTo(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())) > 0) {
-            return new ResponseEntity("Validated", HttpStatus.CREATED);
-        } throw new InvalidTokenException();
+            // TODO: only throw when condition is not met.
+        } else {
+            throw new InvalidTokenException();
+        }
     }
 
     private static Date extractExpirationDateFromToken(String token) {

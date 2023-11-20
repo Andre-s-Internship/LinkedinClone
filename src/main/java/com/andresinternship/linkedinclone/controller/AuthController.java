@@ -29,12 +29,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody UserLoginRequest userDTO) {
-        try {
-            String jwtToken = userService.login(userDTO.getEmail(), userDTO.getPassword());
-            return new ResponseEntity<>(new UserLoginResponseDto("Login Successful", jwtToken), HttpStatus.CREATED);
-        } catch (AuthException e) {
-            return new ResponseEntity<>("Request validation failed", HttpStatus.BAD_REQUEST);
-        }
+        String jwtToken = userService.login(userDTO.getEmail(), userDTO.getPassword());
+        return new ResponseEntity<>(new UserLoginResponseDto("Login Successful", jwtToken), HttpStatus.CREATED);
     }
 
 }
