@@ -21,11 +21,7 @@ public class CompanyController {
     @PostMapping()
     public ResponseEntity<?> createCompany(@RequestBody CompanyCreationRequest companyCreationRequest,
                                            @RequestHeader(name = "Authorization") String token) {
-        try {
-            TokenValidator.validateToken(token);
-        } catch (InvalidTokenException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
+        TokenValidator.validateToken(token);
 
         Company company = companyService.createCompany(companyCreationRequest, token);
         CompanyCreationResponseDto companyResponseDto = new CompanyCreationResponseDto();
