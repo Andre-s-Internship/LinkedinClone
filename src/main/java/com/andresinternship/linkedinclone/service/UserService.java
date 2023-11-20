@@ -1,14 +1,13 @@
 package com.andresinternship.linkedinclone.service;
 
-import com.andresinternship.linkedinclone.exceptions.LoginException;
-import com.andresinternship.linkedinclone.exceptions.UserAlreadyExistsException;
-import com.andresinternship.linkedinclone.controller.dto.UserLoginRequest;
+import com.andresinternship.linkedinclone.exceptions.AuthException;
 import com.andresinternship.linkedinclone.model.User;
 import com.andresinternship.linkedinclone.repository.UserRepository;
+import com.andresinternship.linkedinclone.service.helper.TokenGenerator;
 import com.andresinternship.linkedinclone.service.model.RegisterUserData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
@@ -17,12 +16,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     public User registerUser(RegisterUserData user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new UserAlreadyExistsException();
+            throw new AuthException("User already exists");
         }
 
         User newUser = new User();
@@ -36,31 +32,28 @@ public class UserService {
         return newUser;
     }
 
-    public String login(String email, String pass) {
+    public String login(String email, String password) {
         Optional<User> user = userRepository.findByEmail(email);
-
-        validateUser(user);
-
+        validateUser(user, password);
         return TokenService.generateToken(user.get());
     }
 
-    private void validateUser(Optional<User> user) {
+    private void validateUser(Optional<User> user, String plainPassword) {
         if (user.isEmpty()) {
-            // throw exception with corresponding message
+            throw new AuthException("User with given credentials is not found");
         }
-
-        //
-//        if (checkPassword(userLoginRequest.getPassword(), user.get().getPassword())) {
-//            // throw exception with corresponding message
-//        }
+        if (checkPassword(plainPassword, user.get().getPassword())) {
+            throw new AuthException("Credentials are not valid");
+        }
     }
 
-    public String encodePassword(String plainPassword) {
-        return passwordEncoder.encode(plainPassword);
+    private String encodePassword(String plainPassword) {
+        return TokenGenerator.hashString(plainPassword);
     }
 
-    public boolean checkPassword(String plainPassword, String encodedPassword) {
-        return passwordEncoder.matches(plainPassword, encodedPassword);
+    private boolean checkPassword(String plainPassword, String encodedPassword) {
+        String encodedPlainPassword = TokenGenerator.hashString(plainPassword);
+        return encodedPlainPassword.equals(encodedPassword);
     }
 
 }

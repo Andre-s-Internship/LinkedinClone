@@ -5,8 +5,11 @@ import com.andresinternship.linkedinclone.service.helper.CustomJWTToken;
 import com.andresinternship.linkedinclone.service.helper.TokenGenerator;
 import org.apache.tomcat.util.json.JSONParser;
 import org.apache.tomcat.util.json.ParseException;
-import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -16,20 +19,21 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
-@Service
-public class TokenValidation {
+@RestController
+public class TokenValidator {
 
-    public boolean validateToken(String token) {
+    @GetMapping("/validate")
+    public static ResponseEntity validateToken(@RequestBody String token) {
         String[] parts = token.split("\\.");
         CustomJWTToken customJWTToken = TokenGenerator.create(parts[0], parts[1]);
         boolean values = Objects.equals(token, customJWTToken.toString());
         Date expiration = extractExpirationDateFromToken(token);
-        if (values && expiration.compareTo(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())) > 0) {
-            return true;
-        } else throw new InvalidTokenException();
+        if (!values && expiration.compareTo(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())) > 0) {
+            return new ResponseEntity("Validated", HttpStatus.CREATED);
+        } throw new InvalidTokenException();
     }
 
-    public Date extractExpirationDateFromToken(String token)  {
+    private static Date extractExpirationDateFromToken(String token) {
         String[] parts = token.split("\\.");
         String jsonString = new String(Base64.getDecoder().decode(parts[1]));
         JSONParser parser = new JSONParser(jsonString);

@@ -32,7 +32,8 @@ public class User {
 
     private Integer age;
 
-    // add relation here as well.
+    @OneToOne
+    @PrimaryKeyJoinColumn
     private Company ownedCompany;
 
 }

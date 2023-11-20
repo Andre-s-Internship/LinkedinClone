@@ -34,20 +34,20 @@ public class TokenGenerator {
     }
 
     private String createSignature(String header, String payload) {
-        try {
-            String token = header + "." + payload + secretKey;
-            return hashString(token);
-        } catch (NoSuchAlgorithmException e) {
-            e.getMessage();
-        }
-        return null;
+        String token = header + "." + payload + secretKey;
+        return hashString(token);
     }
 
-    private static String hashString(String input) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] encodedhash = digest.digest(
+    public static String hashString(String input) {
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException();
+        }
+        byte[] encodedHash = digest.digest(
                 input.getBytes(StandardCharsets.UTF_8));
-        return bytesToHex(encodedhash);
+        return bytesToHex(encodedHash);
     }
 
     private static String bytesToHex(byte[] hash) {
